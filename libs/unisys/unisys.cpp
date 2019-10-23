@@ -14,6 +14,8 @@
 #pragma warning(disable : 4996 4244)
 #endif
 
+using namespace std;
+
 void UniSys::moduleStatus(const char *str, int perc)
 {
 #ifdef AVS
@@ -25,6 +27,11 @@ void UniSys::moduleStatus(const char *str, int perc)
 #ifdef COVISE
     // TODO
     //printf("ERROR: moduleStatus not yet implemented\n");
+    printf("%s, %d%% done             \r", str, perc);
+#endif
+
+#ifdef VISTLE
+    // TODO
     printf("%s, %d%% done             \r", str, perc);
 #endif
 
@@ -54,6 +61,10 @@ void UniSys::info(const char *str, ...)
     printf("%s\n", buf);
 #endif
 
+#ifdef VISTLE
+    vistleModule->sendInfo("%s", buf);
+#endif
+
 #ifdef VTK
     //printf("WARNING: info not yet implemented, string=%s\n", str);
     printf("%s\n", buf);
@@ -79,6 +90,10 @@ void UniSys::warning(const char *str, ...)
 #else
     covModule->sendWarning("%s", buf);
 #endif
+#endif
+
+#ifdef VISTLE
+    vistleModule->sendWarning("%s", buf);
 #endif
 
 #ifdef VTK
@@ -108,6 +123,10 @@ void UniSys::error(const char *str, ...)
 #else
     covModule->sendError("%s", buf);
 #endif
+#endif
+
+#ifdef VISTLE
+    vistleModule->sendError("%s", buf);
 #endif
 
 #ifdef VTK
@@ -140,6 +159,10 @@ bool UniSys::inputChanged(const char *, int)
     return true; // #### not ok for some cases?
 #endif
 
+#ifdef VISTLE
+    return true;
+#endif
+
 #ifdef VTK
 #if !SUPPRESS_IMPLEMENTATION_WARNINGS
     printf("WARNING: inputChanged not yet implemented\n");
@@ -166,6 +189,11 @@ bool UniSys::parameterChanged(const char *)
     printf("WARNING: parameterChanged not yet implemented\n");
 #endif
     return true; // #### not ok for some cases?
+#endif
+
+#ifdef VISTLE
+    // TODO
+    return true;
 #endif
 
 #ifdef VTK

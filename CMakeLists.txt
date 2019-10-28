@@ -1,13 +1,11 @@
-macro(add_covise_module category targetname)
-    add_module(${targetname} ${ARGN})
-endmacro(add_covise_module)
-
-macro(covise_wnoerror)
-endmacro()
-
 if (UNIVIZ_VISTLE)
-add_definitions(-DVISTLE)
+    add_definitions(-DVISTLE)
+    add_subdirectory(libs/vistle_ext)
+    add_subdirectory(modules/vistle)
 endif()
 
-add_subdirectory(libs)
-add_subdirectory(modules)
+if (UNIVIZ_COVISE)
+    add_definitions(-DCOVISE)
+    add_subdirectory(modules/covise)
+endif()
+

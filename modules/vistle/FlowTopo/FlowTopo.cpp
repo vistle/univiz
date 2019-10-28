@@ -1,14 +1,9 @@
-/* This file is part of COVISE.
-
-   You can use it under the terms of the GNU Lesser General Public License
-   version 2.1 or later, see lgpl-2.1.txt.
-
 // Flow Topology
 // Ronald Peikert and Filip Sadlo 2005
 // CGL ETHZ
 
-#include "stdlib.h"
-#include "stdio.h"
+#include <cstdlib>
+#include <cstdio>
 
 #include "FlowTopo.h"
 
@@ -18,55 +13,54 @@
 #include "unifield.h"
 #include "unisys.h"
 
-static Unstructured *unst = NULL;
-
-UniSys us = UniSys(NULL);
+using namespace vistle;
 
 #include "flow_topo_impl.cpp" // ### including .cpp
 
-int main(int argc, char *argv[])
+FlowTopo::FlowTopo(const std::string &name, int moduleId, mpi::communicator comm)
+: Module("flow topology", name, moduleId, comm)
 {
-    myModule *application = new myModule(argc, argv);
-    application->start(argc, argv);
-    return 0;
+    // ports
+    velocity = createInputPort("velocity", "Vector Data");
+    wallDistance = createInputPort("wallDistance", "Scalar Data");
+    //wallDistance->setRequired(0);
+
+    criticalPoints = createOutputPort("criticalPoints", "Critical Points");
+
+    // params
+    divideByWallDist = addIntParameter("divideByWallDist", "divide by wall distance", false, Parameter::Boolean);
+    interiorCritPoints = addIntParameter("interiorCritPoints", "compute interior critical points", true, Parameter::Boolean);
+    boundaryCritPoints = addIntParameter("boundaryCritPoints", "compute boundary critical points", false, Parameter::Boolean);
+    generateSeeds = addIntParameter("generateSeeds", "generate seeds", false, Parameter::Boolean);
+    seedsPerCircle = addIntParameter("seedsPerCircle", "seeds per circle", 8);
+    setParameterRange<Integer>(seedsPerCircle, 1, INT_MAX);
+    radius = addFloatParameter("radius", "radius", 1.);
+    setParameterRange<Float>(radius, 0., FLT_MAX);
+    offset = addFloatParameter("offset", "offset", 1.);
+    setParameterRange<Float>(offset, 0., FLT_MAX);
 }
 
-void myModule::postInst() {}
-
-void myModule::param(const char *, bool)
+bool FlowTopo::compute()
 {
-    // force min/max
-    adaptMyParams();
-}
-
-int myModule::compute(const char *)
-{
-    // force min/max
-    adaptMyParams();
-
     // system wrapper
-    us = UniSys(this);
+    UniSys us(this);
+
+    auto wallDistanceIn = accept<Vec<Scalar>>(wallDistance);
+    auto velocityIn = expect<Vec<Scalar,3>>(velocity);
 
     // create unstructured object for input
-    if (us.inputChanged("ucd", 0))
-    {
-        if (unst)
-            delete unst;
-        std::vector<coDoFloat *> svec;
-        if (wallDistance->getCurrentObject())
-            svec.push_back((coDoFloat *)(wallDistance->getCurrentObject()));
-        std::vector<coDoVec3 *> vvec;
-        vvec.push_back((coDoVec3 *)(velocity->getCurrentObject()));
-        unst = new Unstructured((coDoUnstructuredGrid *)(grid->getCurrentObject()),
-                                (wallDistance->getCurrentObject() ? &svec : NULL),
-                                &vvec);
-    }
+    std::vector<Vec<Scalar>::const_ptr> svec;
+    if (wallDistanceIn)
+        svec.push_back(wallDistanceIn);
+    std::vector<Vec<Scalar,3>::const_ptr> vvec;
+    vvec.push_back(velocityIn);
+    Unstructured unst(UnstructuredGrid::as(velocityIn->grid()), (wallDistanceIn ? &svec : nullptr), &vvec);
 
     // scalar components come first in Covise-Unstructured
     // ### HACK, should retrieve from Unstructured?
     int compWallDist;
     int compVelo;
-    if (wallDistance->getCurrentObject())
+    if (wallDistanceIn)
     {
         compWallDist = 0;
         compVelo = 1;
@@ -88,38 +82,36 @@ int myModule::compute(const char *)
 #endif
 
     // go
-    {
-        // setup Unifield for output, without allocating or assigning data
-        std::vector<coOutputPort *> outPortVec;
-        outPortVec.push_back(criticalPoints);
-        outPortVec.push_back(criticalPointsData);
-        UniField *unif = new UniField(outPortVec);
 
-        // compute
-        flow_topo_impl(&us, unst, compVelo, compWallDist, &unif,
-                       divideByWallDist->getValue(),
-                       interiorCritPoints->getValue(),
-                       boundaryCritPoints->getValue(),
-                       generateSeeds->getValue(),
-                       seedsPerCircle.getValue(),
-                       radius.getValue(),
-                       offset.getValue());
+    // setup Unifield for output, without allocating or assigning data
+    UniField *unif = new UniField;
 
-        if (unif)
-        {
+    // compute
+    flow_topo_impl(&us, &unst, compVelo, compWallDist, &unif,
+                   divideByWallDist->getValue(),
+                   interiorCritPoints->getValue(),
+                   boundaryCritPoints->getValue(),
+                   generateSeeds->getValue(),
+                   seedsPerCircle->getValue(),
+                   radius->getValue(),
+                   offset->getValue());
 
-            // assign output data to ports
-            coDoStructuredGrid *wgrid;
-            coDoFloat *wdat;
-            unif->getField(&wgrid, &wdat, (coDoVec3 **)NULL);
-
-            criticalPoints->setCurrentObject(wgrid);
-            criticalPointsData->setCurrentObject(wdat);
-
-            // delete field wrapper (but not the field)
-            delete unif;
-        }
+    if (!unif) {
+        return false;
     }
 
-    return SUCCESS;
+    // assign output data to ports
+    vistle::StructuredGrid::ptr wgrid;
+    vistle::Vec<Scalar>::ptr wdat;
+    unif->getField(&wgrid, &wdat, (vistle::Vec<Scalar,3>::ptr *)nullptr);
+    delete unif;
+    unif = nullptr;
+
+    wdat->setGrid(wgrid);
+
+    addObject(criticalPoints, wdat);
+
+    return true;
 }
+
+MODULE_MAIN(FlowTopo)

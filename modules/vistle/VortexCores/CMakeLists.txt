@@ -4,6 +4,7 @@ SET(HEADERS
 
 SET(SOURCES
     VortexCores.cpp
+    ../../impl/vortex_cores/computeVortexCores.cpp
 )
 
 include_directories(../../../libs/linalg
@@ -15,7 +16,7 @@ include_directories(../../../libs/linalg
 ../../impl/vortex_cores
 )
 
-add_module(VortexCores VortexCores.cpp ../../impl/vortex_cores/computeVortexCores.cpp)
+add_module(VortexCores ${HEADERS} ${SOURCES})
 target_link_libraries(VortexCores vistle_univiz)
 
 #COVISE_INSTALL_TARGET(VortexCores)

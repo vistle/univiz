@@ -1,6 +1,6 @@
 add_subdirectory(FieldToLines)
 #add_subdirectory(FLE)
-#add_subdirectory(FlowTopo)
+add_subdirectory(FlowTopo)
 #add_subdirectory(RidgeSurface)
 add_subdirectory(Statistics)
 add_subdirectory(VortexCores)

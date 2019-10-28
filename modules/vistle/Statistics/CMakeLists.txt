@@ -15,7 +15,7 @@ include_directories(../../../libs/linalg
 ../../impl/statistics
 )
 
-add_module(Statistics Statistics.cpp)
+add_module(Statistics ${SOURCES} ${HEADERS})
 target_link_libraries(Statistics vistle_univiz)
 
 #COVISE_INSTALL_TARGET(Statistics)

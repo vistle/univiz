@@ -79,6 +79,10 @@ UniField::UniField(coDoStructuredGrid *cGrid,
 #endif
 
 #ifdef VISTLE
+UniField::UniField()
+{
+}
+
 UniField::UniField(vistle::Vec<vistle::Scalar>::const_ptr cScalarData, vistle::Vec<vistle::Scalar,2>::const_ptr cVector2Data)
 {
     if (cScalarData) {

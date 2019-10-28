@@ -1,69 +1,29 @@
-#include "api/coSimpleModule.h"
+#include <module/module.h>
 
-#include "covise_ext.h"
-std::vector<myParam *> myParams;
+#include "vistle_ext.h"
 
-class myModule : public coSimpleModule
+class FlowTopo: public vistle::Module
 {
 private:
     // Member functions
-    virtual void postInst();
-    virtual void param(const char *name, bool);
-    virtual int compute(const char *);
+    bool compute() override;
 
     // Inputs
-    coInputPort *grid;
-    coInputPort *velocity;
-    coInputPort *wallDistance;
+    vistle::Port *velocity = nullptr;
+    vistle::Port *wallDistance = nullptr;
 
     // Outputs
-    coOutputPort *criticalPoints;
-    coOutputPort *criticalPointsData;
+    vistle::Port *criticalPoints = nullptr;
 
     // Parameters
-    coBooleanParam *divideByWallDist;
-    coBooleanParam *interiorCritPoints;
-    coBooleanParam *boundaryCritPoints;
-    coBooleanParam *generateSeeds;
-    coIntScalarParamExt seedsPerCircle;
-    coFloatParamExt radius;
-    coFloatParamExt offset;
+    vistle::IntParameter *divideByWallDist = nullptr;
+    vistle::IntParameter *interiorCritPoints = nullptr;
+    vistle::IntParameter *boundaryCritPoints = nullptr;
+    vistle::IntParameter *generateSeeds = nullptr;
+    vistle::IntParameter *seedsPerCircle = nullptr;
+    vistle::FloatParameter *radius = nullptr;
+    vistle::FloatParameter *offset = nullptr;
 
 public:
-    myModule(int argc, char **argv)
-        : coSimpleModule(argc, argv, "Flow Topology")
-    {
-        // ports
-        grid = addInputPort("grid", "UnstructuredGrid",
-                            "Unstructured Grid");
-        velocity = addInputPort("velocity", "Vec3", "Vector Data");
-        wallDistance = addInputPort("wallDistance", "Float", "Scalar Data");
-        wallDistance->setRequired(0);
-        criticalPoints = addOutputPort("criticalPoints", "StructuredGrid",
-                                       "Critical Points");
-        criticalPointsData = addOutputPort("criticalPointsData", "Float",
-                                           "Critical Points Data");
-
-        // params
-        divideByWallDist = addBooleanParam("divideByWallDist", "divide by wall distance");
-        interiorCritPoints = addBooleanParam("interiorCritPoints", "compute interior critical points");
-        boundaryCritPoints = addBooleanParam("boundaryCritPoints", "compute boundary critical points");
-        generateSeeds = addBooleanParam("generateSeeds", "generate seeds");
-        seedsPerCircle.p = addInt32Param("seedsPerCircle", "seeds per circle");
-        radius.p = addFloatParam("radius", "radius");
-        offset.p = addFloatParam("offset", "offset");
-
-        // param default values
-        divideByWallDist->setValue(false);
-        interiorCritPoints->setValue(true);
-        boundaryCritPoints->setValue(false);
-        generateSeeds->setValue(false);
-        seedsPerCircle.setValue(8, 1, INT_MAX);
-        radius.setValue(1.0, 0.0, FLT_MAX);
-        offset.setValue(1.0, 0.0, FLT_MAX);
-    }
-
-    virtual ~myModule()
-    {
-    }
+    FlowTopo(const std::string &name, int moduleId, mpi::communicator comm);
 };

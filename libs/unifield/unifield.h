@@ -41,10 +41,10 @@ using namespace covise;
 #endif
 
 #ifdef VISTLE
-#include <module/module.h>
-#include <core/unstr.h>
-#include <core/vec.h>
-#include <core/structuredgrid.h>
+#include <vistle/module/module.h>
+#include <vistle/core/unstr.h>
+#include <vistle/core/vec.h>
+#include <vistle/core/structuredgrid.h>
 #endif
 
 #ifdef VTK

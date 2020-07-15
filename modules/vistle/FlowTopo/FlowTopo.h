@@ -1,4 +1,4 @@
-#include <module/module.h>
+#include <vistle/module/module.h>
 
 #include "vistle_ext.h"
 

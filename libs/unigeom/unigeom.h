@@ -31,10 +31,10 @@
 #endif
 
 #ifdef VISTLE
-#include <module/module.h>
-#include <core/port.h>
-#include <core/lines.h>
-#include <core/polygons.h>
+#include <vistle/module/module.h>
+#include <vistle/core/port.h>
+#include <vistle/core/lines.h>
+#include <vistle/core/polygons.h>
 #endif
 
 #ifdef VTK

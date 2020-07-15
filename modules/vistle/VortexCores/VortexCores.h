@@ -2,7 +2,7 @@
 // Ronald Peikert, Martin Roth <=2005 and Filip Sadlo >=2006
 // Computer Graphics Laboratory, ETH Zurich
 
-#include <module/module.h>
+#include <vistle/module/module.h>
 
 #include <vistle_ext.h>
 

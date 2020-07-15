@@ -24,7 +24,7 @@
 #endif
 
 #ifdef VISTLE
-#include <module/module.h>
+#include <vistle/module/module.h>
 #endif
 
 #ifdef VTK

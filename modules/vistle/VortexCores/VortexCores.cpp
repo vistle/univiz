@@ -15,8 +15,8 @@
 
 #include "computeVortexCores.h"
 #include "ucd_vortex_cores_impl.cpp" // ### including .cpp
-#include <util/enum.h>
-#include <core/unstr.h>
+#include <vistle/util/enum.h>
+#include <vistle/core/unstr.h>
 
 using namespace vistle;
 

@@ -15,7 +15,7 @@
 
 #include "field_to_lines_impl.cpp" // ### including .cpp
 
-#include <core/database.h>
+#include <vistle/core/database.h>
 
 using namespace vistle;
 

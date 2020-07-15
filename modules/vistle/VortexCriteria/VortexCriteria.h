@@ -2,7 +2,7 @@
 // Filip Sadlo 2007
 // Computer Graphics Laboratory, ETH Zurich
 
-#include <module/module.h>
+#include <vistle/module/module.h>
 
 #include "vistle_ext.h"
 

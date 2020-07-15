@@ -14,8 +14,8 @@
 
 #include "vortex_criteria_impl.cpp" // ### including .cpp
 
-#include <core/unstr.h>
-#include <core/vec.h>
+#include <vistle/core/unstr.h>
+#include <vistle/core/vec.h>
 
 using namespace vistle;
 

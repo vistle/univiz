@@ -5,9 +5,9 @@
 #ifndef UNIVIZ_VISTLE_EXT_H
 #define UNIVIZ_VISTLE_EXT_H
 
-#include <module/module.h>
-#include <core/parameter.h>
-#include <core/unstr.h>
+#include <vistle/module/module.h>
+#include <vistle/core/parameter.h>
+#include <vistle/core/unstr.h>
 #include <vector>
 #include "export.h"
 

@@ -16,8 +16,6 @@ UnstructuredGrid::ptr generateUniformUSG(const char *name,
                                          float cellSize)
 { // generates uniform hexahedral USG
 
-    bool success = true;
-
     int ncells = cellsX * cellsY * cellsZ;
     int nnodes = (cellsX + 1) * (cellsY + 1) * (cellsZ + 1);
 
@@ -33,7 +31,6 @@ UnstructuredGrid::ptr generateUniformUSG(const char *name,
     if (!elemList || !cornerList || !coordX || !coordY || !coordZ || !typeList)
     {
         printf("allocation failed\n");
-        success = false;
         return UnstructuredGrid::ptr();
     }
 

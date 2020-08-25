@@ -10,8 +10,8 @@ void ucd_vortex_cores_impl(UniSys *us, Unstructured *unst, int compV,
     static PolylineList *polylineList = NULL;
 
     //int i;
-    static int oldNNodes = 0;
-    static int oldNCells = 0;
+    //static int oldNNodes = 0;
+    //static int oldNCells = 0;
     static float extent;
 
     // decide if compV has changed
@@ -48,8 +48,8 @@ void ucd_vortex_cores_impl(UniSys *us, Unstructured *unst, int compV,
 
         us->moduleStatus("Computing connectivity", 30);
         ucdc = computeConnectivity(unst);
-        oldNNodes = unst->nNodes;
-        oldNCells = unst->nCells;
+        //oldNNodes = unst->nNodes;
+        //oldNCells = unst->nCells;
     }
 
     /* Compute extent */

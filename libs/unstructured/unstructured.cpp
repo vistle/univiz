@@ -955,7 +955,7 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
         bool bad = false;
         if (scal->size() < 1)
             bad = true;
-        for (int i = 0; i < scal->size(); i++)
+        for (unsigned i = 0; i < scal->size(); i++)
         {
             if (!(*scal)[i])
                 bad = true;
@@ -975,7 +975,7 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
         bool bad = false;
         if (vect->size() < 1)
             bad = true;
-        for (int i = 0; i < vect->size(); i++)
+        for (unsigned i = 0; i < vect->size(); i++)
         {
             if (!(*vect)[i])
                 bad = true;
@@ -1180,7 +1180,7 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
         scalarComponent = -1;
         if (scal)
         {
-            for (int co = 0; co < scal->size(); co++)
+            for (unsigned co = 0; co < scal->size(); co++)
             {
                 nodeComponents[numNodeComp] = 1;
                 float *wp = const_cast<float *>(&((*scal)[co]->x())[0]);
@@ -1200,7 +1200,7 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
         if (vect)
         {
             const int vveclen = 3;
-            for (int co = 0; co < vect->size(); co++)
+            for (unsigned co = 0; co < vect->size(); co++)
             {
                 nodeComponents[numNodeComp] = vveclen;
 
@@ -2500,7 +2500,7 @@ void Unstructured::setTransientFile(const char *dataInfoFile, int verbose)
 
         // get name of binary file
         {
-            char fileName[1024];
+            char fileName[3024];
             char name[1024];
             fscanf(fp, "%s", name);
             char path[1024];
@@ -2508,7 +2508,7 @@ void Unstructured::setTransientFile(const char *dataInfoFile, int verbose)
 #ifdef WIN32
 			char drive[900];
 			char dirname[900];
-			char filename[900];
+            char filename[4900];
 			char ext[900];
 			_splitpath_s(path, drive, sizeof(drive), dirname, sizeof(dirname), filename, sizeof(filename), ext, sizeof(ext));
 			sprintf(fileName, "%s/%s", dirname, name);
@@ -6293,10 +6293,10 @@ void Unstructured::matrixInvert(int matComp, Unstructured *out, int outComp, boo
                 }
                 else
                 {
-                    mIn[0][0] = 0;
-                    mIn[1][0] = 0;
-                    mIn[0][1] = 0;
-                    mIn[1][1] = 0;
+                    mOut[0][0] = 0;
+                    mOut[1][0] = 0;
+                    mOut[0][1] = 0;
+                    mOut[1][1] = 0;
                 }
                 inv[0][0] = mOut[0][0];
                 inv[1][0] = mOut[1][0];

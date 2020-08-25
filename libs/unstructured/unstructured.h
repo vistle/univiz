@@ -1010,6 +1010,7 @@ inline void Unstructured::getVector3(int node, int comp, vec3 vec)
     if (vector3CB && comp != 0)
     {
         printf("Unstructured: error: specified component!=0 but in vector3CB mode\n");
+        vec[0] = vec[1] = vec[2] = 0.;
         return;
     }
 

@@ -1074,9 +1074,9 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
             nodeList[i] = cl[i];
         }
     }
-    x = const_cast<float *>(&grid->x()[0]);
-    y = const_cast<float *>(&grid->y()[0]);
-    z = const_cast<float *>(&grid->z()[0]);
+    x = const_cast<Scalar *>(&grid->x()[0]);
+    y = const_cast<Scalar *>(&grid->y()[0]);
+    z = const_cast<Scalar *>(&grid->z()[0]);
     cStride = 1; // non-interleaved coordinate data
 
 // type definitions for tet, pyr, prism, and hex are ACTUALLY (### HACK TODO)
@@ -1183,7 +1183,7 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
             for (unsigned co = 0; co < scal->size(); co++)
             {
                 nodeComponents[numNodeComp] = 1;
-                float *wp = const_cast<float *>(&((*scal)[co]->x())[0]);
+                Scalar *wp = const_cast<Scalar *>(&((*scal)[co]->x())[0]);
 
                 NodeCompDataPtr dp;
                 dp.ptrs.push_back(wp);
@@ -1206,9 +1206,9 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
 
                 NodeCompDataPtr dp;
 
-                float *up = const_cast<float *>(&((*vect)[co]->x())[0]);
-                float *vp = const_cast<float *>(&((*vect)[co]->y())[0]);
-                float *wp = const_cast<float *>(&((*vect)[co]->z())[0]);
+                Scalar *up = const_cast<Scalar *>(&((*vect)[co]->x())[0]);
+                Scalar *vp = const_cast<Scalar *>(&((*vect)[co]->y())[0]);
+                Scalar *wp = const_cast<Scalar *>(&((*vect)[co]->z())[0]);
                 dp.ptrs.push_back(up);
                 dp.ptrs.push_back(vp);
                 dp.ptrs.push_back(wp);
@@ -2074,7 +2074,11 @@ Unstructured::Unstructured(Unstructured *templ, DataDesc *dd)
 Unstructured::Unstructured(Unstructured *templ, int veclen)
 { // allocates single component of veclen
 
+#ifdef VISTLE
+    vistle::Scalar *dat = new vistle::Scalar[veclen * templ->nNodes];
+#else
     float *dat = new float[veclen * templ->nNodes];
+#endif
     DataDesc dd = DataDesc(0, TP_FLOAT, veclen, dat);
 
     setupUnstructured(templ, &dd);
@@ -2103,7 +2107,11 @@ Unstructured::Unstructured(Unstructured *templ, int componentCnt, int *component
 
     for (int c = 0; c < componentCnt; c++)
     {
+#ifdef VISTLE
+        vistle::Scalar *dat = new vistle::Scalar[components[c] * templ->nNodes];
+#else
         float *dat = new float[components[c] * templ->nNodes];
+#endif
         DataDesc *dd = new DataDesc(0, TP_FLOAT, components[c], dat);
         dv.push_back(dd);
     }
@@ -2166,14 +2174,34 @@ Unstructured::Unstructured(const char *fileName)
 #endif
 
     // Coordinates
+    coordinatesAllocated = true;
+    cStride = 1; // non-interleaved coordinate data
+#ifdef VISTLE
+    x = new vistle::Scalar[nNodes];
+    y = new vistle::Scalar[nNodes];
+    z = new vistle::Scalar[nNodes];
+
+    if (sizeof(vistle::Scalar) != sizeof(float)) {
+        auto readfloat = [this, fp](vistle::Scalar *d) {
+            std::vector<float> f(nNodes);
+            fread(f.data(), sizeof(float), nNodes, fp);
+            std::copy(f.begin(), f.end(), d);
+        };
+        readfloat(x);
+        readfloat(y);
+        readfloat(z);
+    }
+    else
+#else
     x = new float[nNodes];
     y = new float[nNodes];
     z = new float[nNodes];
-    coordinatesAllocated = true;
-    fread(x, sizeof(float), nNodes, fp);
-    fread(y, sizeof(float), nNodes, fp);
-    fread(z, sizeof(float), nNodes, fp);
-    cStride = 1; // non-interleaved coordinate data
+#endif
+    {
+        fread(x, sizeof(float), nNodes, fp);
+        fread(y, sizeof(float), nNodes, fp);
+        fread(z, sizeof(float), nNodes, fp);
+    }
 
     // Data
     vectorComponent = -1;
@@ -2185,7 +2213,11 @@ Unstructured::Unstructured(const char *fileName)
             scalarComponent = i;
         if (veclen > 1 && vectorComponent == -1)
             vectorComponent = i;
+#ifdef VISTLE
+        vistle::Scalar *dptr = new vistle::Scalar[nNodes * veclen]; // data is interleaved ###
+#else
         float *dptr = new float[nNodes * veclen]; // data is interleaved ###
+#endif
         fread(dptr, sizeof(float), nNodes * veclen, fp);
 
         NodeCompDataPtr dp;
@@ -5129,7 +5161,11 @@ DataDesc *Unstructured::newNodeCompExtraData(int comp, int dataType,
     //d->p.fm3 = new fmat3[nNodes];
     //if (!d->p.fm3) return NULL;
     case TP_FLOAT:
+#ifdef VISTLE
+        d->p.f = new vistle::Scalar[veclen * nNodes];
+#else
         d->p.f = new float[veclen * nNodes];
+#endif
         if (!d->p.f)
             return NULL;
         break;

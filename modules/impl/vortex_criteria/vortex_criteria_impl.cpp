@@ -257,7 +257,11 @@ void vortex_criteria_impl(UniSys *us,
 
 // create temporary vector field for acceleration
 #if 1 // TODO: replace by simple constructor, one day it is debugged
+#ifdef VISTLE
+        vistle::Scalar *data = new vistle::Scalar[3 * unst_in->nNodes];
+#else
         float *data = new float[3 * unst_in->nNodes];
+#endif
         DataDesc dd = DataDesc(0, Unstructured::TP_FLOAT, 3, data);
         Unstructured *accel = new Unstructured(unst_in, &dd);
 #endif

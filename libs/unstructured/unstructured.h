@@ -125,11 +125,19 @@ public:
 #else
     union p
     {
+#ifdef VISTLE
+        vistle::Scalar *f;
+#else
         float *f;
+#endif
     } p;
 #endif
 
+#ifdef VISTLE
+    DataDesc(int opId, int dataT, int vecl, vistle::Scalar *data)
+#else
     DataDesc(int opId, int dataT, int vecl, float *data)
+#endif
     {
         operationId = opId;
         dataType = dataT;
@@ -175,7 +183,11 @@ struct CriticalPoint
 
 typedef struct NodeCompDataPtr
 {
+#ifdef VISTLE
+    std::vector<vistle::Scalar *> ptrs; // pointer to each component of vectorial UCD component
+#else
     std::vector<float *> ptrs; // pointer to each component of vectorial UCD component
+#endif
     int stride;
 } NodeCompDataPtr;
 
@@ -234,7 +246,11 @@ private:
 
     int *nodeComponents;
     char **nodeComponentLabels;
+#ifdef VISTLE
+    std::vector<vistle::Scalar *> allocatedNodeDataComponents;
+#else
     std::vector<float *> allocatedNodeDataComponents;
+#endif
     std::vector<std::vector<DataDesc *> > nodeCompExtraData;
     bool isCopy;
     bool nameAllocated;
@@ -271,9 +287,15 @@ private:
     fvec3 *cellCentroid;
     float *cellRadiusSqr;
 
+#ifdef  VISTLE
+    vistle::Scalar *x = nullptr;
+    vistle::Scalar *y = nullptr;
+    vistle::Scalar *z = nullptr;
+#else
     float *x = nullptr;
     float *y = nullptr;
     float *z = nullptr;
+#endif
 
     int vectorComponent;
     DataDesc *vectorComponentExtraData; // points to selected extra data, NULL otherwise
@@ -292,11 +314,19 @@ private:
     int vector3CBBackupComp;
     bool vector3CBRestrictToGrid;
 
+#ifdef VISTLE
+    vistle::Scalar *u = nullptr;
+    vistle::Scalar *v = nullptr;
+    vistle::Scalar *w = nullptr;
+    vistle::Scalar *p = nullptr;
+    vistle::Scalar *wallDist = nullptr;
+#else
     float *u = nullptr;
     float *v = nullptr;
     float *w = nullptr;
     float *p = nullptr;
     float *wallDist = nullptr;
+#endif
 
     int vStride; // stride for vector data
     int sStride; // stride for scalar data
@@ -499,7 +529,11 @@ public:
     double getWallDist(int node);
     int getCellZone(int cell, double time);
     int getNodeCompVecLen(int comp);
+#ifdef VISTLE
+    vistle::Scalar *getNodeMatrixCompPtr(int comp);
+#else
     float *getNodeMatrixCompPtr(int comp);
+#endif
 
     DataDesc *newNodeCompExtraData(int comp, int dataType, int veclen, int operationId);
     void deleteNodeCompExtraData(DataDesc *dd);
@@ -813,7 +847,7 @@ inline float Unstructured::getScalar(int node, int comp)
     if (transient)
         printf("Unstructured::getScalar error: no transient data, returning reference time step\n");
 
-    float *ptr = nodeComponentDataPtrs[comp].ptrs[0];
+    auto *ptr = nodeComponentDataPtrs[comp].ptrs[0];
     int sStride = nodeComponentDataPtrs[comp].stride;
     return ptr[sStride * node];
 }
@@ -824,7 +858,7 @@ inline float Unstructured::getScalar(int node, int comp, int opId)
         printf("Unstructured::getScalar error: no transient data, returning reference time step\n");
 
     DataDesc *dd = findNodeCompExtraData(comp, opId);
-    float *ptr = dd->p.f;
+    auto *ptr = dd->p.f;
     int sStride = dd->veclen; // dd must be actually interleaved
     return ptr[sStride * node];
 }
@@ -836,7 +870,7 @@ inline void Unstructured::setScalar(int node, float scal)
 
 inline void Unstructured::setScalar(int node, int comp, float scal)
 {
-    float *ptr = nodeComponentDataPtrs[comp].ptrs[0];
+    auto *ptr = nodeComponentDataPtrs[comp].ptrs[0];
     int sStride = nodeComponentDataPtrs[comp].stride;
     ptr[sStride * node] = scal;
 }
@@ -844,7 +878,7 @@ inline void Unstructured::setScalar(int node, int comp, float scal)
 inline void Unstructured::setScalar(int node, int comp, int opId, float scal)
 {
     DataDesc *dd = findNodeCompExtraData(comp, opId);
-    float *ptr = dd->p.f;
+    auto *ptr = dd->p.f;
     int sStride = dd->veclen; // dd must be actually interleaved
     ptr[sStride * node] = scal;
 }
@@ -1049,7 +1083,7 @@ inline void Unstructured::getVector3(int node, int comp, int opId, vec3 vec)
     }
 
     DataDesc *dd = findNodeCompExtraData(comp, opId);
-    float *ptrU = dd->p.f;
+    auto *ptrU = dd->p.f;
     int vStride = dd->veclen; // dd must be actually interleaved
     vec[0] = (ptrU + 0)[vStride * node];
     vec[1] = (ptrU + 1)[vStride * node];
@@ -1100,7 +1134,7 @@ inline void Unstructured::setVector3(int node, int comp, int opId, vec3 vec)
     }
 
     DataDesc *dd = findNodeCompExtraData(comp, opId);
-    float *ptrU = dd->p.f;
+    auto *ptrU = dd->p.f;
     int vStride = dd->veclen; // dd must be actually interleaved
     (ptrU + 0)[vStride * node] = vec[0];
     (ptrU + 1)[vStride * node] = vec[1];
@@ -1150,7 +1184,7 @@ inline void Unstructured::getMatrix3(int node, fmat3 mat)
     if (transient)
         printf("Unstructured::getMatrix3 error: no transient data, returning reference time step\n");
 
-    memcpy(mat, u + vStride * node, 3 * 3 * sizeof(float));
+    std::copy(u + vStride * node, u + vStride * node + 3*3, &mat[0][0]);
 }
 
 inline void Unstructured::getMatrix3(int node, int comp, fmat3 mat)
@@ -1158,9 +1192,9 @@ inline void Unstructured::getMatrix3(int node, int comp, fmat3 mat)
     if (transient)
         printf("Unstructured::getMatrix3 error: no transient data, returning reference time step\n");
 
-    float *ptrU = nodeComponentDataPtrs[comp].ptrs[0];
+    auto *ptrU = nodeComponentDataPtrs[comp].ptrs[0];
     int vStride = nodeComponentDataPtrs[comp].stride;
-    memcpy(mat, ptrU + vStride * node, 3 * 3 * sizeof(float));
+    std::copy(ptrU + vStride * node, ptrU + vStride * node + 3*3, &mat[0][0]);
 }
 
 inline void Unstructured::getMatrix3(int node, int comp, int opId, fmat3 mat)
@@ -1169,29 +1203,29 @@ inline void Unstructured::getMatrix3(int node, int comp, int opId, fmat3 mat)
         printf("Unstructured::getMatrix3 error: no transient data, returning reference time step\n");
 
     DataDesc *dd = findNodeCompExtraData(comp, opId);
-    float *ptrU = dd->p.f;
+    auto *ptrU = dd->p.f;
     int vStride = dd->veclen;
-    memcpy(mat, ptrU + vStride * node, 3 * 3 * sizeof(float));
+    std::copy(ptrU + vStride * node, ptrU + vStride * node + 3*3, &mat[0][0]);
 }
 
 inline void Unstructured::setMatrix3(int node, fmat3 mat)
 {
-    memcpy(u + vStride * node, mat, 3 * 3 * sizeof(float));
+    std::copy(&mat[0][0], &mat[0][0]+3*3, u + vStride * node);
 }
 
 inline void Unstructured::setMatrix3(int node, int comp, fmat3 mat)
 {
-    float *ptrU = nodeComponentDataPtrs[comp].ptrs[0];
+    auto *ptrU = nodeComponentDataPtrs[comp].ptrs[0];
     int vStride = nodeComponentDataPtrs[comp].stride;
-    memcpy(ptrU + vStride * node, mat, 3 * 3 * sizeof(float));
+    std::copy(&mat[0][0], &mat[0][0]+3*3, ptrU + vStride * node);
 }
 
 inline void Unstructured::setMatrix3(int node, int comp, int opId, fmat3 mat)
 {
     DataDesc *dd = findNodeCompExtraData(comp, opId);
-    float *ptrU = dd->p.f;
+    auto *ptrU = dd->p.f;
     int vStride = dd->veclen;
-    memcpy(ptrU + vStride * node, mat, 3 * 3 * sizeof(float));
+    std::copy(&mat[0][0], &mat[0][0]+3*3, ptrU + vStride * node);
 }
 
 /* unused
@@ -1298,7 +1332,11 @@ inline float *Unstructured::getNodeDataCompPtr(int comp)
   return nodeComponentDataPtrs[comp];
 }
 #else
+#ifdef VISTLE
+inline vistle::Scalar *Unstructured::getNodeMatrixCompPtr(int comp)
+#else
 inline float *Unstructured::getNodeMatrixCompPtr(int comp)
+#endif
 { // matrix data is actually interleaved ###
     return nodeComponentDataPtrs[comp].ptrs[0];
 }

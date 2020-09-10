@@ -16,8 +16,8 @@ UnstructuredGrid::ptr generateUniformUSG(const char *name,
                                          float cellSize)
 { // generates uniform hexahedral USG
 
-    int ncells = cellsX * cellsY * cellsZ;
-    int nnodes = (cellsX + 1) * (cellsY + 1) * (cellsZ + 1);
+    Index ncells = cellsX * cellsY * cellsZ;
+    Index nnodes = (cellsX + 1) * (cellsY + 1) * (cellsZ + 1);
 
     UnstructuredGrid::ptr grid(new UnstructuredGrid(ncells, ncells*8, nnodes));
     Index *elemList = grid->el().data();
@@ -35,9 +35,9 @@ UnstructuredGrid::ptr generateUniformUSG(const char *name,
     }
 
     // set coordinates and connectivity
-    float *xp = coordX;
-    float *yp = coordY;
-    float *zp = coordZ;
+    Scalar *xp = coordX;
+    Scalar *yp = coordY;
+    Scalar *zp = coordZ;
     int n = 0;
     int c = 0;
     for (int z = 0; z < cellsZ + 1; z++)

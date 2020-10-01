@@ -1084,7 +1084,7 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
     {
         auto tl = &grid->tl()[0];
         cellType = new int[grid->getNumElements()];
-        for (Index i=0; i<nCells; ++i)
+        for (int i=0; i<nCells; ++i)
             cellType[i] = tl[i] & UnstructuredGrid::TYPE_MASK;
     }
 

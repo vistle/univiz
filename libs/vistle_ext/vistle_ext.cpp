@@ -60,7 +60,7 @@ UnstructuredGrid::ptr generateUniformUSG(const char *name,
                         n + nXY, n + nXY + 1, n + nXYPX + 1, n + nXYPX
                     };
 
-                    memcpy(cornerList + c * 8, list, 8 * sizeof(Index));
+                    std::copy(list, list+8, cornerList + c * 8);
                     elemList[c] = c * 8;
                     typeList[c] = UnstructuredGrid::HEXAHEDRON;
 

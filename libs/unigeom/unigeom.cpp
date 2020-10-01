@@ -195,7 +195,7 @@ void UniGeom::addPolyline(float *vertices, float *colors, int nvertices)
     auto &z = outLine->z();
     auto &el = outLine->el();
     auto &cl = outLine->cl();
-    for (Index v=0; v<nvertices; ++v) {
+    for (int v=0; v<nvertices; ++v) {
         cl.emplace_back(cl.size());
         x.emplace_back(vertices[v*3+0]);
         y.emplace_back(vertices[v*3+1]);
@@ -240,7 +240,7 @@ void UniGeom::addVertices(float *verts, int nvertices)
     auto &x = outPoly->x();
     auto &y = outPoly->y();
     auto &z = outPoly->z();
-    for (Index v=0; v<nvertices; ++v) {
+    for (int v=0; v<nvertices; ++v) {
         x.emplace_back(verts[v*3+0]);
         y.emplace_back(verts[v*3+1]);
         z.emplace_back(verts[v*3+2]);
@@ -275,7 +275,7 @@ void UniGeom::addPolygon(int nvertices, int *indices)
     // ##### TODO: colors
     auto &cl = outPoly->cl();
     auto &el = outPoly->el();
-    for (Index v=0; v<nvertices; ++v) {
+    for (int v=0; v<nvertices; ++v) {
         cl.emplace_back(indices[v]);
     }
     el.emplace_back(cl.size());

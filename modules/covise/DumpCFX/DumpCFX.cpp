@@ -2,8 +2,8 @@
 // Filip Sadlo 2008
 // Computer Graphics Laboratory, ETH Zurich
 
-#include "stdlib.h"
-#include "stdio.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "DumpCFX.h"
 

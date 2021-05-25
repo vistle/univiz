@@ -7,6 +7,7 @@
 #include "../Mz/Mz_lib.cpp"
 #include <climits>
 #include <cfloat>
+#include <cmath>
 
 void vortex_criteria_impl(UniSys *us,
                           Unstructured *unst_in, int compVelo,

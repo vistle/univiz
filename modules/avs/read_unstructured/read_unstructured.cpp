@@ -18,16 +18,18 @@
 
 /* ----> START OF USER-SUPPLIED CODE SECTION #1 (INCLUDE FILES, GLOBAL VARIABLES)*/
 
-using namespace std;
+#include <cmath>
+#include <cfloat>
 
-#include <math.h>
-#include "vector"
-#include "algorithm"
-#include "values.h"
+#include <vector>
+#include <algorithm>
+#include <values.h>
 
 #include "avs_ext.h"
 #include "unstructured.h"
 #include "unisys.h"
+
+using namespace std;
 
 /* <---- END OF USER-SUPPLIED CODE SECTION #1                            */
 

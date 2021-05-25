@@ -4,6 +4,8 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <cfloat>
+#include <cmath>
 
 #include "VortexCores.h"
 

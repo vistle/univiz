@@ -1,5 +1,7 @@
 #include "../FLE/FLE_lib.cpp" // #### including .cpp
 #include "Mz_lib.cpp"
+#include <cmath>
+#include <cfloat>
 
 #define OUTCOMP_MZ 0
 

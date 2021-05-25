@@ -36,6 +36,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <math.h>
+#include <cfloat>
 #include <vector>
 #include <map>
 #include <values.h>

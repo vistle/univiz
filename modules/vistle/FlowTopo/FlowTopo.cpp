@@ -4,6 +4,8 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <cmath>
+#include <cfloat>
 
 #include "FlowTopo.h"
 

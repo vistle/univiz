@@ -2,8 +2,10 @@
 // Filip Sadlo 2007
 // Computer Graphics Laboratory, ETH Zurich
 
-#include "stdlib.h"
-#include "stdio.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <cfloat>
+#include <cmath>
 
 #include "RidgeSurface.h"
 

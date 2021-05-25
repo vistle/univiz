@@ -4,6 +4,7 @@
 
 #include <climits>
 #include <cfloat>
+#include <cmath>
 
 #include "unigeom.h"
 #include "ridge_surface_lib.cpp" // ### including .cpp

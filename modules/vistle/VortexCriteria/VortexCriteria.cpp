@@ -78,7 +78,7 @@ bool VortexCriteria::compute()
 
 
 VortexCriteria::VortexCriteria(const std::string &name, int moduleId, mpi::communicator comm)
-: vistle::Module("vortex criteria", name, moduleId, comm)
+: vistle::Module(name, moduleId, comm)
 {
     velocity = createInputPort("velocity", "Vector Data");
     scalar = createOutputPort("scalar", "Scalar Criterion");

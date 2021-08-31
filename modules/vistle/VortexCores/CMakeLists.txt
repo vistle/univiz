@@ -16,7 +16,7 @@ include_directories(../../../libs/linalg
 ../../impl/vortex_cores
 )
 
-add_module(VortexCores ${HEADERS} ${SOURCES})
+add_module(VortexCores "vortex corelines" ${HEADERS} ${SOURCES})
 target_link_libraries(VortexCores vistle_univiz)
 
 #COVISE_INSTALL_TARGET(VortexCores)

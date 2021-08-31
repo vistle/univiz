@@ -62,7 +62,7 @@ DEFINE_ENUM_WITH_STRING_CONVERSIONS(Method, (Levy)(Sujudi_Haimes))
 DEFINE_ENUM_WITH_STRING_CONVERSIONS(Variant, (Triangle)(Quad_Newton))
 
 VortexCores::VortexCores(const std::string &name, int moduleId, mpi::communicator comm)
-: vistle::Module("vortex corelines", name, moduleId, comm)
+: vistle::Module(name, moduleId, comm)
 {
     velocity = createInputPort("velocity", "Vector Data");
     coreLines = createOutputPort("coreLines", "Vortex Core Lines");

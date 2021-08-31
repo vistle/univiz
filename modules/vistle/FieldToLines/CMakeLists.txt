@@ -15,7 +15,7 @@ include_directories(../../../libs/linalg
 ../../impl/field_to_lines
 )
 
-add_module(FieldToLines ${SOURCES} ${HEADERS})
+add_module(FieldToLines "field to lines" ${SOURCES} ${HEADERS})
 target_link_libraries(FieldToLines vistle_univiz)
 
 #COVISE_INSTALL_TARGET(FieldToLines)

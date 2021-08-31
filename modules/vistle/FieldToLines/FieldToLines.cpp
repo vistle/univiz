@@ -54,7 +54,7 @@ bool FieldToLines::compute()
 }
 
 FieldToLines::FieldToLines(const std::string &name, int moduleId, mpi::communicator comm)
-: vistle::Module("field to lines", name, moduleId, comm)
+: vistle::Module(name, moduleId, comm)
 {
     lineField = createInputPort("lineField", "Line Data");
 

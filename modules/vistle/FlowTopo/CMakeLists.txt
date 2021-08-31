@@ -15,7 +15,7 @@ include_directories(../../../libs/linalg
 ../../impl/flow_topo
 )
 
-add_module(FlowTopo ${SOURCES} ${HEADERS})
+add_module(FlowTopo "flow topology" ${SOURCES} ${HEADERS})
 target_link_libraries(FlowTopo vistle_univiz)
 
 #COVISE_INSTALL_TARGET(FlowTopo)

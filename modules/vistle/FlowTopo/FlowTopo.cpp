@@ -20,7 +20,7 @@ using namespace vistle;
 #include "flow_topo_impl.cpp" // ### including .cpp
 
 FlowTopo::FlowTopo(const std::string &name, int moduleId, mpi::communicator comm)
-: Module("flow topology", name, moduleId, comm)
+: Module(name, moduleId, comm)
 {
     // ports
     velocity = createInputPort("velocity", "Vector Data");

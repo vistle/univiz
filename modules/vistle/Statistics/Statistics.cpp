@@ -66,7 +66,7 @@ bool Statistics::compute()
 }
 
 Statistics::Statistics(const string &name, int moduleId, mpi::communicator comm)
-: vistle::Module("statistics", name, moduleId, comm)
+: vistle::Module(name, moduleId, comm)
 {
     grid = createInputPort("grid", "Unstructured Grid");
     vector = createInputPort("vector", "Vector Data");

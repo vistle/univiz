@@ -15,7 +15,7 @@ include_directories(../../../libs/linalg
 ../../impl/vortex_criteria
 )
 
-add_module(VortexCriteria ${HEADERS} ${SOURCES})
+add_module(VortexCriteria "vortex criteria" ${HEADERS} ${SOURCES})
 target_link_libraries(VortexCriteria vistle_univiz)
 
 #COVISE_INSTALL_TARGET(VortexCores)

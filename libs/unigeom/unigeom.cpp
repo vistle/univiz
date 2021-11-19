@@ -95,7 +95,7 @@ UniGeom::UniGeom(vistle::Module *mod, vistle::Port *port, Object::const_ptr src)
 {
 }
 
-UniGeom::UniGeom(vistle::PortTask *task, vistle::Port *port, Object::const_ptr src)
+UniGeom::UniGeom(vistle::BlockTask *task, vistle::Port *port, Object::const_ptr src)
 : task(task)
 , sourceObject(src)
 , outputPort(port)

@@ -102,7 +102,7 @@ private:
 #ifdef VISTLE
     int geomType = GT_INVALID;
     vistle::Module *mod = nullptr;
-    vistle::PortTask *task = nullptr;
+    vistle::BlockTask *task = nullptr;
     vistle::Object::const_ptr sourceObject;
     vistle::Port *inputPort = nullptr;
     vistle::Port *outputPort = nullptr;
@@ -136,7 +136,7 @@ public:
 
 #ifdef VISTLE
     UniGeom(vistle::Module *mod, vistle::Port *outport, vistle::Object::const_ptr src=vistle::Object::const_ptr());
-    UniGeom(vistle::PortTask *task, vistle::Port *outport, vistle::Object::const_ptr src=vistle::Object::const_ptr());
+    UniGeom(vistle::BlockTask *task, vistle::Port *outport, vistle::Object::const_ptr src=vistle::Object::const_ptr());
 #endif
 
 #ifdef VTK // VTK constructor

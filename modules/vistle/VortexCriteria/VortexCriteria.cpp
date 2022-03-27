@@ -71,6 +71,7 @@ bool VortexCriteria::compute()
 
     scalarData->copyAttributes(vvec[0]);
     scalarData->addAttribute("_species", toString(Quantity(quantity->getValue())));
+    updateMeta(scalarData);
     addObject(scalar, scalarData);
 
     return true;

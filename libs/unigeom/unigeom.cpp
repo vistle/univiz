@@ -697,17 +697,23 @@ void UniGeom::assignObj(const char *)
     switch (geomType) {
     case GT_LINE:
         outLine->copyAttributes(sourceObject);
-        if (task)
+        if (mod)
+            mod->updateMeta(outLine);
+        if (task) {
             task->addObject(outputPort, outLine);
-        else if (mod)
+        } else if (mod) {
             mod->addObject(outputPort, outLine);
+        }
         break;
     case GT_POLYHEDRON:
         outPoly->copyAttributes(sourceObject);
-        if (task)
+        if (mod)
+            mod->updateMeta(outPoly);
+        if (task) {
             task->addObject(outputPort, outPoly);
-        else if (mod)
+        } else if (mod) {
             mod->addObject(outputPort, outPoly);
+        }
         break;
     }
 #endif

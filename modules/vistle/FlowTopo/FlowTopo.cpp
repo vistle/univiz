@@ -109,6 +109,8 @@ bool FlowTopo::compute()
     delete unif;
     unif = nullptr;
 
+    updateMeta(wgrid);
+    updateMeta(wdat);
     wdat->setGrid(wgrid);
 
     addObject(criticalPoints, wdat);

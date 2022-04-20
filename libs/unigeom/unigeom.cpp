@@ -822,7 +822,7 @@ int UniGeom::getVertexCnt()
 #ifdef VISTLE
     switch (geomType) {
     case GT_LINE:
-        return outLine->getSize();
+        return outLine->getNumCoords();
         break;
     case GT_POLYHEDRON:
         return outPoly->cl().size();

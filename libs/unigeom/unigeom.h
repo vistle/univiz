@@ -104,7 +104,6 @@ private:
     vistle::Module *mod = nullptr;
     vistle::BlockTask *task = nullptr;
     vistle::Object::const_ptr sourceObject;
-    vistle::Port *inputPort = nullptr;
     vistle::Port *outputPort = nullptr;
     vistle::Lines::ptr outLine;
     vistle::Polygons::ptr outPoly;

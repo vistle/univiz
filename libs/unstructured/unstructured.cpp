@@ -1085,7 +1085,7 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
         auto tl = &grid->tl()[0];
         cellType = new int[grid->getNumElements()];
         for (int i=0; i<nCells; ++i)
-            cellType[i] = tl[i] & UnstructuredGrid::TYPE_MASK;
+            cellType[i] = tl[i];
     }
 
     // convert node order from Covise to AVS

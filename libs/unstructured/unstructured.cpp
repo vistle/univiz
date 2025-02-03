@@ -991,7 +991,7 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
     }
 
     isCopy = false;
-    nameAllocated = false;
+    nameAllocated = true;
     nodeListAllocated = true;
     nodeListOffsetsAllocated = true;
     cellTypesAllocated = true;
@@ -1008,7 +1008,9 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
 
     }
     if (grid) {
-        name = const_cast<char *>(grid->getName().c_str()); // ### ok? (accesses DistributedObject base class)
+        const auto n = grid->getName();
+        name = new char[n.size() + 1];
+        strcpy(name, n.c_str());
     } else {
         name = nullptr;
     }
@@ -1084,8 +1086,51 @@ Unstructured::Unstructured(UnstructuredGrid::const_ptr grid,
     {
         auto tl = &grid->tl()[0];
         cellType = new int[grid->getNumElements()];
-        for (int i=0; i<nCells; ++i)
-            cellType[i] = tl[i];
+        for (int i = 0; i < nCells; ++i) {
+            auto &val = cellType[i];
+
+            // ### TODO: get id's from vtkCellType.h
+            switch (tl[i]) {
+            case UnstructuredGrid::POINT: {
+                val = CELL_POINT;
+            } break;
+            case UnstructuredGrid::BAR: {
+                val = CELL_LINE;
+            } break;
+            case UnstructuredGrid::POLYLINE: {
+                val = CELL_LINE;
+            } break;
+            case UnstructuredGrid::TRIANGLE: {
+                val = CELL_TRI;
+            } break;
+            //case UnstructuredGrid::POLYGON: { // polygon ### ACTUALLY NOT SUPPORTED
+            //val = 0; // ###
+            //} break;
+            case UnstructuredGrid::QUAD: {
+                val = CELL_QUAD;
+            } break;
+            case UnstructuredGrid::TETRAHEDRON: {
+                val = CELL_TET;
+            } break;
+            //case UnstructuredGrid::POLYHEDRON: {
+            //val = 0;
+            //} break;
+            case UnstructuredGrid::HEXAHEDRON: {
+                val = CELL_HEX;
+            } break;
+            case UnstructuredGrid::PRISM: { // wedge
+                val = CELL_PRISM;
+            } break;
+            case UnstructuredGrid::PYRAMID: { // pyramid
+                val = CELL_PYR;
+            } break;
+            default: {
+                printf("Unstructured-VTK: ERROR1: unsupported cell type: %d\n", tl[i]);
+                // TODO: copy nodes
+                val = 0;
+            }
+            }
+        }
     }
 
     // convert node order from Covise to AVS
@@ -5194,10 +5239,9 @@ void Unstructured::deleteNodeCompExtraData(DataDesc *dd)
     break;
   case TP_MATRIX3: delete [] dd->p.fm3;
     break;
-#else
-    case TP_FLOAT:
-        delete[] dd -> p.f;
 #endif
+    case TP_FLOAT:
+        delete[] dd->p.f;
     }
     delete dd;
 

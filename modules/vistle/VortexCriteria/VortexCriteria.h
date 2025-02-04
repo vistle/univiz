@@ -11,6 +11,7 @@ class VortexCriteria : public vistle::Module
 private:
     // Member functions
     bool compute() override;
+    bool changeParameter(const vistle::Parameter *param) override;
 
     // Inputs
     vistle::Port *velocity = nullptr;

@@ -77,6 +77,14 @@ bool VortexCriteria::compute()
     return true;
 }
 
+bool VortexCriteria::changeParameter(const vistle::Parameter *param)
+{
+    if (!param || param == quantity) {
+        setItemInfo(toString(Quantity(quantity->getValue())));
+    }
+    return Module::changeParameter(param);
+}
+
 
 VortexCriteria::VortexCriteria(const std::string &name, int moduleId, mpi::communicator comm)
 : vistle::Module(name, moduleId, comm)

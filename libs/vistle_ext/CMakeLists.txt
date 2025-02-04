@@ -16,7 +16,7 @@ set (univiz_SOURCES
 )
 
 include_directories(../linalg)
-     
+
 vistle_add_library(vistle_univiz INTERNAL ${VISTLE_LIB_TYPE} ${univiz_SOURCES} ${univiz_HEADERS})
 target_link_libraries(vistle_univiz PRIVATE vistle_core vistle_module)
 

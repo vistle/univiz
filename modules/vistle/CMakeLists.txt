@@ -1,3 +1,5 @@
+vistle_category("UniViz" "vector field visualization tools")
+
 add_subdirectory(FieldToLines)
 #add_subdirectory(FLE)
 add_subdirectory(FlowTopo)

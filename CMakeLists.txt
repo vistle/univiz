@@ -1,5 +1,6 @@
 if (UNIVIZ_VISTLE)
-    set(VISTLE_MODULE_CATEGORY "UniViz")
+    vistle_category("UniViz" "vector field visualization modules by Filip Sadlo")
+
     add_definitions(-DVISTLE)
     add_subdirectory(libs/vistle_ext)
     add_subdirectory(modules/vistle)

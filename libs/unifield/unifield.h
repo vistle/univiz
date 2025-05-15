@@ -574,13 +574,13 @@ inline const char *UniField::getCompName(int comp)
     static std::string fieldname;
     fieldname.clear();
     if (comp == 2 && vistleVector2Data) {
-        fieldname = vistleVector2Data->getAttribute("_species");
+        fieldname = vistleVector2Data->getAttribute(vistle::attribute::Species);
     }
     if (comp == 3 && vistleVector3Data) {
-        fieldname = vistleVector3Data->getAttribute("_species");
+        fieldname = vistleVector3Data->getAttribute(vistle::attribute::Species);
     }
     if (comp == 1 && vistleScalarData) {
-        fieldname = vistleScalarData->getAttribute("_species");
+        fieldname = vistleScalarData->getAttribute(vistle::attribute::Species);
     }
     return fieldname.empty() ? nullptr : fieldname.c_str();
 #endif

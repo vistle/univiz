@@ -16,6 +16,6 @@ include_directories(../../../libs/linalg
 )
 
 add_module(Statistics "statistics" ${SOURCES} ${HEADERS})
-target_link_libraries(Statistics vistle_univiz)
+target_link_libraries(Statistics PRIVATE vistle_univiz)
 
 #COVISE_INSTALL_TARGET(Statistics)

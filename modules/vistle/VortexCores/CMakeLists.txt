@@ -17,6 +17,6 @@ include_directories(../../../libs/linalg
 )
 
 add_module(VortexCores "vortex corelines" ${HEADERS} ${SOURCES})
-target_link_libraries(VortexCores vistle_univiz)
+target_link_libraries(VortexCores PRIVATE vistle_univiz)
 
 #COVISE_INSTALL_TARGET(VortexCores)

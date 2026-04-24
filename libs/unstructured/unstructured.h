@@ -238,8 +238,8 @@ public:
     } gradientMethodEnum;
 
     char *name = nullptr;
-    int nCells;
-    int nNodes;
+    int nCells = 0;
+    int nNodes = 0;
 
 private:
     CellInfo currCell;
@@ -261,9 +261,9 @@ private:
 
     bool transient;
 #ifdef UNST_DATA_DICT
-    DataDict *transientDataDict;
+    DataDict *transientDataDict = nullptr;
 #else
-    void *transientDataDict;
+    void *transientDataDict = nullptr;
 #endif
     std::vector<string> transientFiles;
     std::vector<std::vector<float> > transientFilesTimeSteps;
@@ -284,8 +284,8 @@ public:
     std::vector<NodeCompDataPtr> nodeComponentDataPtrs;
 
 private:
-    fvec3 *cellCentroid;
-    float *cellRadiusSqr;
+    fvec3 *cellCentroid = nullptr;
+    float *cellRadiusSqr = nullptr;
 
 #ifdef  VISTLE
     vistle::Scalar *x = nullptr;
@@ -298,9 +298,9 @@ private:
 #endif
 
     int vectorComponent;
-    DataDesc *vectorComponentExtraData; // points to selected extra data, NULL otherwise
+    DataDesc *vectorComponentExtraData = nullptr; // points to selected extra data, NULL otherwise
     int scalarComponent;
-    DataDesc *scalarComponentExtraData; // points to selected extra data, NULL otherwise
+    DataDesc *scalarComponentExtraData = nullptr; // points to selected extra data, NULL otherwise
     int wallDistComponent;
     int zoneComponent;
     int nodeComponentNb;
@@ -349,8 +349,8 @@ public:
     bool extrapolateToNoSlipBoundary;
 
 private:
-    vector<int> *nodeNeighbors; // Neighbor nodes (for derivatives, filters etc.)
-    vector<int> *cellNeighbors; // Neighbor cells
+    vector<int> *nodeNeighbors = nullptr; // Neighbor nodes (for derivatives, filters etc.)
+    vector<int> *cellNeighbors = nullptr; // Neighbor cells
     std::vector<int> cellFaceNeighborsCnt; // number of neighbor cells (cellNeighbors) that share a face with given cell
 
 public:

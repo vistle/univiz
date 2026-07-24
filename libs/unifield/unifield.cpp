@@ -197,14 +197,14 @@ bool UniField::allocField(int nDims, int *dims, int nSpace, bool, int nComp, int
 { // compNames: may be NULL and may have NULL entries
 #ifdef AVS
     char regularity[256];
-    sprintf(regularity, (regular ? "regular" : "irregular"));
+    snprintf(regularity, sizeof(regularity), (regular ? "regular" : "irregular"));
 
     char type[256];
     switch (dataType)
     {
     case DT_FLOAT:
     {
-        sprintf(type, "float");
+        snprintf(type, sizeof(type), "float");
     }
     break;
     default:
@@ -215,7 +215,7 @@ bool UniField::allocField(int nDims, int *dims, int nSpace, bool, int nComp, int
         printf("UniField: ERROR: compVecLen>1 not supported\n");
 
     char desc[256];
-    sprintf(desc, "field %dD %d-vector %s %d-space %s",
+    snprintf(desc, sizeof(desc), "field %dD %d-vector %s %d-space %s",
             nDims, compVecLen[0], regularity, nSpace, type);
 
     AVSfield_float *wf;
@@ -374,7 +374,7 @@ bool UniField::allocField(int nDims, int *dims, int nSpace, bool, int nComp, int
         else
         {
             char buf[256];
-            sprintf(buf, "%p", dat);
+            snprintf(buf, sizeof(buf), "%p", dat);
             dat->SetName(buf);
         }
         vtkFld->GetPointData()->AddArray(dat);

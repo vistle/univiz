@@ -622,7 +622,7 @@ void setupTime(int isTimestep, int *timestep, int timestep_by_idx, int *nTimeDig
             }
             if (!isFound)
             {
-                sprintf(errmsg, "\nTimestep %d not found. "
+                snprintf(errmsg, sizeof(errmsg), "\nTimestep %d not found. "
                                 "Use -f to see the list of valid timesteps.\n",
                         *timestep);
                 cfxExportFatal(errmsg);
@@ -891,7 +891,7 @@ int cfx_getInfo(const char *file_name, int level_of_interest,
                 }
                 if (!isFound)
                 {
-                    sprintf(errmsg, "\nTimestep %d not found. "
+                    snprintf(errmsg, sizeof(errmsg), "\nTimestep %d not found. "
                                     "Use -f to see the list of valid timesteps.\n",
                             timestep);
                     cfxExportFatal(errmsg);

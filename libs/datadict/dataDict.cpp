@@ -76,7 +76,7 @@ void DataDict::setDataDict(char *dirName, int size, bool verb, bool mmap)
 #ifdef WIN32
     HANDLE handle;
     char dirSpec[400];
-    sprintf(dirSpec, "%s\\*", dirName);
+    snprintf(dirSpec, sizeof(dirSpec), "%s\\*", dirName);
     WIN32_FIND_DATA fileData;
     bool first = true;
 #else
@@ -142,7 +142,7 @@ void DataDict::setDataDict(char *dirName, int size, bool verb, bool mmap)
 #else
         struct stat status;
         char fullName[400];
-        sprintf(fullName, "%s/%s", directory, fileName);
+        snprintf(fullName, sizeof(fullName), "%s/%s", directory, fileName);
         int ret = stat(fullName, &status);
         nBytesFile = ret >= 0 ? status.st_size : 0;
 #endif
@@ -226,7 +226,7 @@ TimeStep *DataDict::getTimeStep(int timeStepNr)
 
             // open new file
             char fileName[400];
-            sprintf(fileName, "%s/%s", directory, ts->fileName);
+            snprintf(fileName, sizeof(fileName), "%s/%s", directory, ts->fileName);
             if (verbose)
                 fprintf(stderr, "opening\n");
             fileDescs[cachePos] = open(fileName, O_RDONLY);
@@ -269,7 +269,7 @@ TimeStep *DataDict::getTimeStep(int timeStepNr)
 
             // Read the data
             char fileName[400];
-            sprintf(fileName, "%s/%s", directory, ts->fileName);
+            snprintf(fileName, sizeof(fileName), "%s/%s", directory, ts->fileName);
             FILE *fp = fopen(fileName, "rb");
             if (!fp)
             {

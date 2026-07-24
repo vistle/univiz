@@ -454,7 +454,7 @@ inline int writeHB_mat_double(const char *filename, int M, int N, int nz,
     if (Ptrfmt == NULL)
         Ptrfmt = "(8I10)";
     ParseIfmt(Ptrfmt, &Ptrperline, &Ptrwidth);
-    sprintf(pformat, "%%%dd", Ptrwidth);
+    snprintf(pformat, sizeof(pformat), "%%%dd", Ptrwidth);
     ptrcrd = (N + 1) / Ptrperline;
     if ((N + 1) % Ptrperline != 0)
         ptrcrd++;
@@ -462,7 +462,7 @@ inline int writeHB_mat_double(const char *filename, int M, int N, int nz,
     if (Indfmt == NULL)
         Indfmt = Ptrfmt;
     ParseIfmt(Indfmt, &Indperline, &Indwidth);
-    sprintf(iformat, "%%%dd", Indwidth);
+    snprintf(iformat, sizeof(iformat), "%%%dd", Indwidth);
     indcrd = nz / Indperline;
     if (nz % Indperline != 0)
         indcrd++;
@@ -475,9 +475,9 @@ inline int writeHB_mat_double(const char *filename, int M, int N, int nz,
         if (Valflag == 'D')
             *strchr(Valfmt, 'D') = 'E';
         if (Valflag == 'F')
-            sprintf(vformat, "%% %d.%df", Valwidth, Valprec);
+            snprintf(vformat, sizeof(vformat), "%% %d.%df", Valwidth, Valprec);
         else
-            sprintf(vformat, "%% %d.%dE", Valwidth, Valprec);
+            snprintf(vformat, sizeof(vformat), "%% %d.%dE", Valwidth, Valprec);
         valcrd = nvalentries / Valperline;
         if (nvalentries % Valperline != 0)
             valcrd++;
@@ -491,9 +491,9 @@ inline int writeHB_mat_double(const char *filename, int M, int N, int nz,
             Rhsfmt = Valfmt;
         ParseRfmt(Rhsfmt, &Rhsperline, &Rhswidth, &Rhsprec, &Rhsflag);
         if (Rhsflag == 'F')
-            sprintf(rformat, "%% %d.%df", Rhswidth, Rhsprec);
+            snprintf(rformat, sizeof(rformat), "%% %d.%df", Rhswidth, Rhsprec);
         else
-            sprintf(rformat, "%% %d.%dE", Rhswidth, Rhsprec);
+            snprintf(rformat, sizeof(rformat), "%% %d.%dE", Rhswidth, Rhsprec);
         if (Rhsflag == 'D')
             *strchr(Rhsfmt, 'D') = 'E';
         rhscrd = nrhsentries / Rhsperline;
@@ -768,7 +768,7 @@ inline char *mm_typecode_to_str(MM_typecode matcode)
     else
         return NULL;
 
-    sprintf(buffer, "%s %s %s %s", types[0], types[1], types[2], types[3]);
+    snprintf(buffer, sizeof(buffer), "%s %s %s %s", types[0], types[1], types[2], types[3]);
     return strdup(buffer);
 }
 

@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 
     // get path to current data file
     char path[1024];
-    sprintf(path, "%s/%s", argv[2], buf);
+    snprintf(path, sizeof(path), "%s/%s", argv[2], buf);
     printf("converting %s\n", path);
 
     // open current data file
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
     
     // get path to current data file
     char path[1024];
-    sprintf(path, "%s/%s", argv[2], buf);
+    snprintf(path, sizeof(path), "%s/%s", argv[2], buf);
     printf("opening %s\n", path);
 
     // open current data file
@@ -277,7 +277,7 @@ int genMMap(int timeStepNb, int firstTimeStep,
 
         // get path to current data file
         char path[1024];
-        sprintf(path, "%s/%s", pathToData, buf);
+        snprintf(path, sizeof(path), "%s/%s", pathToData, buf);
         printf("converting %s\n", path);
 
         // open current data file
@@ -333,7 +333,7 @@ int genMMap(int timeStepNb, int firstTimeStep,
 
         // get path to current data file
         char path[1024];
-        sprintf(path, "%s/%s", pathToData, buf);
+        snprintf(path, sizeof(path), "%s/%s", pathToData, buf);
         printf("opening %s\n", path);
 
         // open current data file
@@ -426,7 +426,7 @@ int generateMMapFile(int timeStepNb, char dumpFileNames[][256],
 
     FILE *fp;
     char descName[256];
-    sprintf(descName, "%s/data.info", outputPath);
+    snprintf(descName, sizeof(descName), "%s/data.info", outputPath);
     fp = fopen(descName, "w");
     if (!fp)
     {
@@ -456,7 +456,7 @@ int generateMMapFile(int timeStepNb, char dumpFileNames[][256],
 
         // generate mmap file
         char outFile[256];
-        sprintf(outFile, "%s/%s_%d-%d.bin", outputPath, COMPONENT_DESC, start, end);
+        snprintf(outFile, sizeof(outFile), "%s/%s_%d-%d.bin", outputPath, COMPONENT_DESC, start, end);
         if (genMMap(end - start + 1,
                     start,
                     nnodes, // elementsPerDataFile,

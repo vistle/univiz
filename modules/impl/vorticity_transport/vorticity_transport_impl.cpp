@@ -77,7 +77,7 @@ void vorticity_transport_impl(UniSys *us, Unstructured *unst, int compV,
         if (!(v % 100))
         {
             char buf[256];
-            sprintf(buf, "pathline for vertex %d", v);
+            snprintf(buf, sizeof(buf), "pathline for vertex %d", v);
             us->moduleStatus(buf, (int)((100.0 * v) / ugeomCoreLines->getVertexCnt()));
         }
 

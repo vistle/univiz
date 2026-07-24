@@ -156,7 +156,7 @@ void computeFlowMap(UniSys *us,
                 if (!(nIdx % 100))
                 {
                     char buf[256];
-                    sprintf(buf, "mapping node %d (%d)", nIdx, n);
+                    snprintf(buf, sizeof(buf), "mapping node %d (%d)", nIdx, n);
                     us->moduleStatus(buf, (int)((100.0 * nIdx) / nodes->size()));
                 }
             }
@@ -165,7 +165,7 @@ void computeFlowMap(UniSys *us,
                 if (!(n % 100))
                 {
                     char buf[256];
-                    sprintf(buf, "mapping node %d", n);
+                    snprintf(buf, sizeof(buf), "mapping node %d", n);
                     us->moduleStatus(buf, (int)((100.0 * n) / unst_out->nNodes));
                 }
             }
@@ -620,7 +620,7 @@ void computeFlowMap(UniSys *us,
                     if (!(nIdx % 100))
                     {
                         char buf[256];
-                        sprintf(buf, "mapping node %d (%d) step %d", nIdx, n, step);
+                        snprintf(buf, sizeof(buf), "mapping node %d (%d) step %d", nIdx, n, step);
                         us->moduleStatus(buf, (int)((100.0 * nIdx) / nodes->size()));
                     }
                 }
@@ -629,7 +629,7 @@ void computeFlowMap(UniSys *us,
                     if (!(n % 100))
                     {
                         char buf[256];
-                        sprintf(buf, "mapping node %d step %d", n, step);
+                        snprintf(buf, sizeof(buf), "mapping node %d step %d", n, step);
                         us->moduleStatus(buf, (int)((100.0 * n) / unst_out->nNodes));
                     }
                 }
@@ -844,7 +844,7 @@ void computeFTLE_atNode(UniSys *us,
     if (!(n % 100))
     {
         char buf[256];
-        sprintf(buf, "FTLE for node %d", n);
+        snprintf(buf, sizeof(buf), "FTLE for node %d", n);
         us->moduleStatus(buf, (int)((100.0 * n) / map->nNodes));
     }
 

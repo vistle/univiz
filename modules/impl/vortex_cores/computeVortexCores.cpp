@@ -1637,7 +1637,7 @@ VertexList *findParallel(UniSys *us, Unstructured *unst, UCD_connectivity *ucdc,
         if (cell % 10000 == 0)
         {
             char str[100];
-            sprintf(str, "cell %4dk of %4dk", cell / 1000, unst->nCells / 1000);
+            snprintf(str, sizeof(str), "cell %4dk of %4dk", cell / 1000, unst->nCells / 1000);
             us->moduleStatus(str, (100 * cell) / unst->nCells);
         }
     }

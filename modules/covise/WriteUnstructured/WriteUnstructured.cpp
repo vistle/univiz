@@ -110,7 +110,7 @@ int myModule::compute(const char *)
     else
     {
         char fname[1024];
-        sprintf(fname, "%s%d", fileName->getValue(), sequenceId);
+        snprintf(fname, sizeof(fname), "%s%d", fileName->getValue(), sequenceId);
         write_unstructured_impl(&us, unst_in, fname);
         sequenceId++;
     }

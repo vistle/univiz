@@ -36,7 +36,7 @@ void passLineFieldVertexData(vtkStructuredGrid *input,
         else
         {
             char buf[256];
-            sprintf(buf, "%p", dat);
+            snprintf(buf, sizeof(buf), "%p", dat);
             dat->SetName(buf);
         }
         output->GetPointData()->AddArray(dat);
@@ -251,7 +251,7 @@ char *getLabelName(const char *widgetName)
     static char buf[256];
     // REVERSE-ENGINEERING HACK:
     // THIS MUST BE CONSISTENT WITH pqNamedWidgets.cxx: createPanelLabel()
-    sprintf(buf, "%s_label", widgetName);
+    snprintf(buf, sizeof(buf), "%s_label", widgetName);
     return buf;
 }
 

@@ -502,7 +502,7 @@ bool ridge_surface_impl(UniSys *us,
                 count_marked++;
         }
 
-        sprintf(stat,
+        snprintf(stat, sizeof(stat),
                 "%d hex, %d tet, %d other (ignored)\n%d triangles generated\n",
                 count_hex, count_tet, count_other, count_tria);
         // TODO:

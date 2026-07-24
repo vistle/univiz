@@ -67,7 +67,7 @@ void statistics_impl(UniSys *us,
     float perc99 = data[(int)rint((n - 1) * 0.99)];
 
     char str[1000];
-    sprintf(str,
+    snprintf(str, sizeof(str),
             "-----------------------\n"
             "nodes:  %d\n"
             "mean:   %g\n"

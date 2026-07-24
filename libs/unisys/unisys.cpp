@@ -101,7 +101,7 @@ void UniSys::warning(const char *str, ...)
     //printf("warning: %s\n", buf);
     //vtkWarningMacro(buf);
     char buf2[4096]; // ###
-    sprintf(buf2, "warning: %s", buf);
+    snprintf(buf2, sizeof(buf2), "warning: %s", buf);
     vtkOutputWindowDisplayWarningText(buf2);
 #endif
 }
@@ -134,7 +134,7 @@ void UniSys::error(const char *str, ...)
     //printf("error: %s\n", buf);
     //vtkErrorMacro(buf);
     char buf2[4096]; // ###
-    sprintf(buf2, "ERROR: %s", buf);
+    snprintf(buf2, sizeof(buf2), "ERROR: %s", buf);
     vtkOutputWindowDisplayWarningText(buf2);
 #endif
 }

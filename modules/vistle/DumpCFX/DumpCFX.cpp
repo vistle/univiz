@@ -310,7 +310,7 @@ int myModule::compute(const char *)
                 int relStep = step - firstTimeStep.getValue();
                 FILE *fp;
                 char name[256];
-                sprintf(name, "%s/%.6f", outputPath->getValue(), timeVal);
+                snprintf(name, sizeof(name), "%s/%.6f", outputPath->getValue(), timeVal);
                 sprintf(dumpFileNames[relStep], "%.6f", timeVal);
                 fp = fopen(name, "wb");
                 if (!fp)
@@ -342,7 +342,7 @@ int myModule::compute(const char *)
             for (int i = 0; i < timeStepsToProcess; i++)
             {
                 char name[256];
-                sprintf(name, "%s/%s", outputPath->getValue(), dumpFileNames[i]);
+                snprintf(name, sizeof(name), "%s/%s", outputPath->getValue(), dumpFileNames[i]);
                 remove(name);
             }
         }

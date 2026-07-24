@@ -408,7 +408,7 @@ int vtkDumpCFX::RequestData(
             int relStep = step - FirstTimeStep;
             FILE *fp;
             char name[256];
-            sprintf(name, "%s/%.6f", OutputPath, timeVal);
+            snprintf(name, sizeof(name), "%s/%.6f", OutputPath, timeVal);
             sprintf(dumpFileNames[relStep], "%.6f", timeVal);
             fp = fopen(name, "wb");
             if (!fp)
@@ -441,7 +441,7 @@ int vtkDumpCFX::RequestData(
         for (int i = 0; i < timeStepsToProcess; i++)
         {
             char name[256];
-            sprintf(name, "%s/%s", OutputPath, dumpFileNames[i]);
+            snprintf(name, sizeof(name), "%s/%s", OutputPath, dumpFileNames[i]);
             remove(name);
         }
     }

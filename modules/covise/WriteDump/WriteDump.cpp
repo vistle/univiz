@@ -86,7 +86,7 @@ int myModule::compute(const char *)
     else
     {
         char fname[1024];
-        sprintf(fname, "%s%.6f", fileName->getValue(), sequenceId * timeStep.getValue() + startTime.getValue());
+        snprintf(fname, sizeof(fname), "%s%.6f", fileName->getValue(), sequenceId * timeStep.getValue() + startTime.getValue());
         write_dump_impl(&us, unst_in, fname);
         sequenceId++;
     }

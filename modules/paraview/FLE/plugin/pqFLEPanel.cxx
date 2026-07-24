@@ -20,7 +20,7 @@ char *getLabelName(const char *widgetName)
     static char buf[256];
     // ######## REVERSE-ENGINEERED HACK !!!!!! #################################:
     // THIS MUST BE CONSISTENT WITH Qt/Components/pqNamedWidgets.cxx: createPanelLabel()
-    sprintf(buf, "_labelFor%s", widgetName);
+    snprintf(buf, sizeof(buf), "_labelFor%s", widgetName);
     return buf;
 }
 

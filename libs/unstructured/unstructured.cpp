@@ -1794,7 +1794,7 @@ Unstructured::Unstructured(vtkUnstructuredGrid *grid,
                 else
                 { // generate fake label
                     char label[256];
-                    sprintf(label, "%p", (*scal)[co]->GetPointer(0));
+                    snprintf(label, sizeof(label), "%p", (*scal)[co]->GetPointer(0));
                     strcpy(nodeComponentLabels[numNodeComp], label);
                 }
 #if DEBUG_OUTPUT
@@ -1832,7 +1832,7 @@ Unstructured::Unstructured(vtkUnstructuredGrid *grid,
                 else
                 {
                     char label[256];
-                    sprintf(label, "%p", (*vect)[co]->GetPointer(0));
+                    snprintf(label, sizeof(label), "%p", (*vect)[co]->GetPointer(0));
                     strcpy(nodeComponentLabels[numNodeComp], label);
                 }
 #if DEBUG_OUTPUT
@@ -2588,9 +2588,9 @@ void Unstructured::setTransientFile(const char *dataInfoFile, int verbose)
             char filename[4900];
 			char ext[900];
 			_splitpath_s(path, drive, sizeof(drive), dirname, sizeof(dirname), filename, sizeof(filename), ext, sizeof(ext));
-			sprintf(fileName, "%s/%s", dirname, name);
+			snprintf(fileName, sizeof(fileName), "%s/%s", dirname, name);
 #else
-            sprintf(fileName, "%s/%s", dirname(path), name);
+            snprintf(fileName, sizeof(fileName), "%s/%s", dirname(path), name);
 #endif
             transientFiles.push_back(string(fileName));
         }
@@ -6201,7 +6201,7 @@ void Unstructured::computeGradientMeyer(Unstructured *unst, int compIn, int rang
         if (!(n % 1000))
         {
             //char buf[256];
-            //sprintf(buf, "processing node %d", n);
+            //snprintf(buf, sizeof(buf), "processing node %d", n);
             //AVSmodule_status(buf, (int) ((((double) n) / unst->nNodes) * 100));
             printf("%d%% done       \r", (int)((n * 100.0) / unst->nNodes));
         }
@@ -7021,7 +7021,7 @@ bool Unstructured::saveAs(const char *fileName)
         else
         {
             char buf[256];
-            sprintf(buf, "%d", l);
+            snprintf(buf, sizeof(buf), "%d", l);
             fwrite(buf, sizeof(char), 256, fp); // 256: identical to constructor! TODO: constant
         }
     }

@@ -100,7 +100,7 @@ bool findInString(char *key, char sep, char *string)
 bool findInString(int key, char sep, char *string)
 {
     char keyS[1024];
-    sprintf(keyS, "%d", key);
+    snprintf(keyS, sizeof(keyS), "%d", key);
 
     return findInString(keyS, sep, string);
 }
